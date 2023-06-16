@@ -2,6 +2,8 @@
 # author: Alex Lobley
 # Based on tutorial from https://www.youtube.com/watch?v=8ext9G7xspg&t=100s
 
+import os
+
 TRUE_RESPONSES = ['y', 'yes', '1', 'true']
 FALSE_RESPONSES = ['n', 'no', '0', 'false']
 ERROR_COUNTS = 3
@@ -53,10 +55,15 @@ def runReplacements(text):
     
 # main()
 retry = True
-while retry & fileErrorsLeft < 0:
-    fileErrorsLeft = ERROR_COUNTS
+fileErrorsLeft = ERROR_COUNTS
+
+# TODO: #1 Needs to set dir to consistent location
+# https://stackoverflow.com/questions/1432924/python-change-the-scripts-working-directory-to-the-scripts-own-directory
+
+while retry & fileErrorsLeft > 0:
     wordReplacements = []
     try:
+        
         with open(input("Please select Madlibs file to use: ") + ".txt", "r", encoding='utf8') as textChosen:
             
             posInFile = readFileParameters(textChosen)
@@ -71,11 +78,13 @@ while retry & fileErrorsLeft < 0:
             retry = askForRetry()            
                 
     except FileNotFoundError:
-        fileErrorsLeft -=1
+        # TODO #2 Restrict restarts or allow exit if failing
+        #fileErrorsLeft -=1
+        print()
         print("That story could not be found, please try again!")
         print("Reminder: Text must be character-perfect without file extension")
         print("Program will exit after " + str(fileErrorsLeft) + " more attempts")
-
-    except:
-        retry = False
-        print("An unknown error occurred, exiting...")
+        print()
+    # except:
+    #     retry = False
+    #     print("An unknown error occurred, exiting...")
